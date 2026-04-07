@@ -1,0 +1,18 @@
+# Copy to terraform.tfvars (do not commit secrets).
+
+aws_region = "us-east-1"
+
+environment = "dev"
+project     = "vpc-private-stack"
+owner       = "your-team"
+
+# Existing key pair in the same region
+key_name = "my-keypair"
+
+# REQUIRED: full IPv4 CIDR — your.public.ip.address/32 (not "/32" alone)
+allowed_ssh_cidr = "203.0.113.10/32"
+
+# optional overrides
+# public_subnet_cidr  = "10.0.1.0/24"
+# private_subnet_cidr = "10.0.2.0/24"
+# availability_zone   = "us-east-1a"
