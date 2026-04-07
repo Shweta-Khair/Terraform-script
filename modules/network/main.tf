@@ -21,6 +21,12 @@ resource "aws_subnet" "private" {
   availability_zone = local.az
 }
 
+resource "aws_subnet" "private_secondary" {
+  vpc_id            = aws_vpc.main.id
+  cidr_block        = var.private_subnet_cidr_secondary
+  availability_zone = local.az_secondary
+}
+
 resource "aws_eip" "nat" {
   domain = "vpc"
 
@@ -59,5 +65,10 @@ resource "aws_route_table" "private" {
 
 resource "aws_route_table_association" "private" {
   subnet_id      = aws_subnet.private.id
+  route_table_id = aws_route_table.private.id
+}
+
+resource "aws_route_table_association" "private_secondary" {
+  subnet_id      = aws_subnet.private_secondary.id
   route_table_id = aws_route_table.private.id
 }

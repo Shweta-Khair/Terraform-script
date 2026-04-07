@@ -13,6 +13,11 @@ output "private_subnet_id" {
   value       = module.network.private_subnet_id
 }
 
+output "private_subnet_ids" {
+  description = "Private subnet IDs (two AZs; RDS subnet group)."
+  value       = module.network.private_subnet_ids
+}
+
 output "nat_gateway_public_ip" {
   description = "Elastic IP associated with the NAT Gateway (egress IP for private subnet)."
   value       = module.network.nat_gateway_public_ip
@@ -41,4 +46,35 @@ output "private_instance_private_ip" {
 output "amazon_linux_ami_id" {
   description = "Resolved Amazon Linux 2023 AMI used for both instances."
   value       = module.compute.amazon_linux_ami_id
+}
+
+output "private_app_security_group_id" {
+  description = "Security group on the private EC2 (allowed to reach RDS)."
+  value       = module.compute.private_app_security_group_id
+}
+
+output "db_instance_endpoint" {
+  description = "RDS endpoint (host:port)."
+  value       = module.database.db_instance_endpoint
+}
+
+output "db_instance_address" {
+  description = "RDS hostname."
+  value       = module.database.db_instance_address
+}
+
+output "db_instance_port" {
+  description = "RDS port."
+  value       = module.database.db_instance_port
+}
+
+output "db_security_group_id" {
+  description = "Security group for RDS."
+  value       = module.database.db_security_group_id
+}
+
+output "db_master_user_secret_arn" {
+  description = "Secrets Manager ARN for the RDS master password."
+  value       = module.database.master_user_secret_arn
+  sensitive   = true
 }

@@ -1,6 +1,6 @@
 # vpc-private-stack
 
-Root stack that composes **`module.network`** (VPC, subnets, IGW, NAT, routes) and **`module.compute`** (security groups, bastion, private EC2). Provider and variables live at the root; child modules declare `required_providers` only.
+Root stack composes **`module.network`** (VPC, subnets, IGW, NAT, routes), **`module.compute`** (security groups, bastion, private EC2), and **`module.database`** (RDS in private subnets, PostgreSQL by default). The network module includes a **second private subnet** in another AZ so the RDS DB subnet group meets AWS requirements.
 
 ## Layout (module structure)
 
@@ -9,6 +9,7 @@ Root stack that composes **`module.network`** (VPC, subnets, IGW, NAT, routes) a
 | Root | `versions.tf`, `providers.tf`, `variables.tf`, `outputs.tf`, `main.tf` |
 | `modules/network` | `versions.tf`, `variables.tf`, `data.tf`, `main.tf`, `outputs.tf`, `README.md` |
 | `modules/compute` | `versions.tf`, `variables.tf`, `data.tf`, `main.tf`, `outputs.tf`, `README.md` |
+| `modules/rds` | `versions.tf`, `variables.tf`, `main.tf`, `outputs.tf`, `README.md` |
 
 ## Quick start
 
