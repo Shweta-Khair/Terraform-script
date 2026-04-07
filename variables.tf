@@ -34,9 +34,15 @@ variable "public_subnet_cidr" {
 }
 
 variable "private_subnet_cidr" {
-  description = "CIDR for the private subnet (application instance)."
+  description = "CIDR for the private subnet (application instance, first AZ)."
   type        = string
   default     = "10.0.2.0/24"
+}
+
+variable "private_subnet_cidr_secondary" {
+  description = "CIDR for the second private subnet (different AZ; required for RDS subnet group)."
+  type        = string
+  default     = "10.0.3.0/24"
 }
 
 variable "availability_zone" {
@@ -70,4 +76,78 @@ variable "private_instance_type" {
   description = "Instance type for the private subnet workload."
   type        = string
   default     = "t3.micro"
+}
+
+# --- RDS (module.database) ---
+
+variable "db_identifier" {
+  description = "RDS instance identifier (lowercase)."
+  type        = string
+  default     = "vpcstack-pg"
+}
+
+variable "db_engine" {
+  description = "RDS engine (e.g. postgres, mysql)."
+  type        = string
+  default     = "postgres"
+}
+
+variable "db_engine_version" {
+  description = "RDS engine version (major.minor or major only, engine-specific)."
+  type        = string
+  default     = "16"
+}
+
+variable "db_instance_class" {
+  description = "RDS instance class."
+  type        = string
+  default     = "db.t4g.micro"
+}
+
+variable "db_allocated_storage" {
+  description = "RDS allocated storage (GB)."
+  type        = number
+  default     = 20
+}
+
+variable "db_max_allocated_storage" {
+  description = "Max storage for autoscaling (0 = disabled)."
+  type        = number
+  default     = 0
+}
+
+variable "db_name" {
+  description = "Initial database name."
+  type        = string
+  default     = "appdb"
+}
+
+variable "db_master_username" {
+  description = "Master username (password managed in Secrets Manager)."
+  type        = string
+  default     = "dbadmin"
+}
+
+variable "db_port" {
+  description = "Database port (5432 PostgreSQL, 3306 MySQL)."
+  type        = number
+  default     = 5432
+}
+
+variable "db_skip_final_snapshot" {
+  description = "Skip final snapshot on destroy (dev only)."
+  type        = bool
+  default     = true
+}
+
+variable "db_deletion_protection" {
+  description = "Enable RDS deletion protection."
+  type        = bool
+  default     = false
+}
+
+variable "db_backup_retention_period" {
+  description = "Backup retention days (0 = no automated backups)."
+  type        = number
+  default     = 1
 }

@@ -9,8 +9,13 @@ output "public_subnet_id" {
 }
 
 output "private_subnet_id" {
-  description = "Private subnet ID."
+  description = "Private subnet ID (first AZ; application instance)."
   value       = aws_subnet.private.id
+}
+
+output "private_subnet_ids" {
+  description = "Both private subnet IDs (two AZs; use for RDS subnet group)."
+  value       = [aws_subnet.private.id, aws_subnet.private_secondary.id]
 }
 
 output "nat_gateway_public_ip" {
