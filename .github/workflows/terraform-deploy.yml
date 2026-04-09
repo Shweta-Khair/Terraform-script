@@ -67,6 +67,7 @@ jobs:
 
       - name: Terraform Plan
         id: plan
+        if: inputs.action != 'destroy'
         run: |
           terraform plan \
             -var="environment=${{ inputs.environment }}" \

@@ -54,7 +54,7 @@ jobs:
 
             *Pushed by: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*`;
 
-            github.rest.issues.createComment({
+            await github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
@@ -161,7 +161,7 @@ jobs:
           terraform plan \
             -var="owner=github-actions" \
             -var="key_name=${{ secrets.TF_VAR_KEY_NAME || 'default-key' }}" \
-            -var="allowed_ssh_cidr=${{ secrets.TF_VAR_ALLOWED_SSH_CIDR || '0.0.0.0/0' }}" \
+            -var="allowed_ssh_cidr=${{ secrets.TF_VAR_ALLOWED_SSH_CIDR || '127.0.0.1/32' }}" \
             -no-color \
             -out=tfplan
         continue-on-error: true
@@ -193,7 +193,7 @@ jobs:
 
             *Pushed by: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*`;
 
-            github.rest.issues.createComment({
+            await github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
