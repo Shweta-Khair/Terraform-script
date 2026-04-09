@@ -3,8 +3,8 @@ variable "identifier" {
   type        = string
 
   validation {
-    condition     = can(regex("^[a-z][a-z0-9-]{0,62}$", var.identifier))
-    error_message = "identifier must start with a letter, contain only lowercase letters, numbers, hyphens, and be at most 63 characters."
+    condition     = can(regex("^[a-z]([a-z0-9-]*[a-z0-9])?$", var.identifier)) && length(var.identifier) <= 63 && !can(regex("--", var.identifier))
+    error_message = "identifier must start with a letter, end with a letter or number, contain only lowercase letters, numbers, hyphens, must not contain consecutive hyphens, and be at most 63 characters."
   }
 }
 

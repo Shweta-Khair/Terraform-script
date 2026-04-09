@@ -35,6 +35,7 @@ resource "aws_db_instance" "main" {
   engine         = var.engine
   engine_version = var.engine_version
   instance_class = var.instance_class
+  port           = var.database_port
 
   allocated_storage     = var.allocated_storage
   max_allocated_storage = var.max_allocated_storage > 0 ? var.max_allocated_storage : null
