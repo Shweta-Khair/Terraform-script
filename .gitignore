@@ -1,3 +1,7 @@
+# Snakey (Vite / Node)
+snakey/node_modules/
+snakey/dist/
+
 .terraform/
 *.tfstate
 *.tfstate.*
