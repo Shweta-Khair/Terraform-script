@@ -45,3 +45,57 @@ tflint --init && tflint --recursive
 ```
 
 See root `terraform.tfvars.example` for variables; outputs are defined in `outputs.tf`.
+
+## CI/CD Pipeline
+
+This project includes GitHub Actions workflows for automated Terraform operations.
+
+### Workflows
+
+| Workflow | Trigger | Description |
+|----------|---------|-------------|
+| `terraform-ci.yml` | PR / Push to main/master | Format, validate, lint, security scan, and plan |
+| `terraform-deploy.yml` | Manual dispatch | Deploy infrastructure to specific environments |
+| `terraform-drift.yml` | Daily schedule / Manual | Detect infrastructure drift |
+
+### Required Secrets
+
+Configure the following secrets in your GitHub repository settings:
+
+| Secret | Description | Required |
+|--------|-------------|----------|
+| `AWS_ACCESS_KEY_ID` | AWS access key for authentication | Yes |
+| `AWS_SECRET_ACCESS_KEY` | AWS secret key for authentication | Yes |
+| `TF_VAR_KEY_NAME` | EC2 key pair name | Yes |
+| `TF_VAR_ALLOWED_SSH_CIDR` | CIDR for SSH access (e.g., `203.0.113.10/32`) | Yes |
+
+### CI Pipeline Flow
+
+```
+┌─────────────┐    ┌──────────────┐    ┌─────────────┐    ┌──────────────┐
+│   Format    │───▶│   Validate   │───▶│    Lint     │───▶│   Security   │
+│   Check     │    │              │    │   (TFLint)  │    │   (Checkov)  │
+└─────────────┘    └──────────────┘    └─────────────┘    └──────────────┘
+                                                                  │
+                                                                  ▼
+                                                          ┌──────────────┐
+                                                          │    Plan      │
+                                                          │  (PR only)   │
+                                                          └──────────────┘
+```
+
+### Manual Deployment
+
+1. Go to **Actions** → **Terraform Deploy**
+2. Click **Run workflow**
+3. Select environment (`dev`, `staging`, `prod`)
+4. Choose action (`plan`, `apply`, `destroy`)
+5. Enable auto-approve if needed (required for apply/destroy)
+
+### Drift Detection
+
+The drift detection workflow:
+- Runs daily at 6 AM UTC
+- Can be triggered manually for any environment
+- Creates GitHub issues when drift is detected
+- Updates existing issues if drift persists
